@@ -16,3 +16,10 @@ Some basic numeric routines are present:
 All routines have in common that they work on most basic data-types: linear double arrays instead of a special struct for vectors or matrices. That makes the code quite "compiler friendly" and hence fast.
 
 This library is work in progress: no API stability is guaranteed, features can be added and removed at any time, no completeness nor correctness is guaranteed.
+
+Acknowledgements / Contributors:
+  Sergei A. Klioner (GWHL implements his mathematical definition of VSH routines)
+  Lennart Lindegren (GWHL implements his modified cholesky solver)
+  
+  This library has been partly developed during projects financially supported by
+ESA under grant 4000115263/15/NL/IB and the BMWi grant 50QG1402 awarded by the DLR.
