@@ -1,0 +1,16 @@
+Documentation:
+- Source code API docs
+- Handbook
+
+Functionality:
+- crazy indexing schemes to linear arrays
+- sparse matrix functionality
+- MPI based distributed sorting on too-large-for-one datasets
+
+Code:
+- separate code more clearly by function, most source files are rather big atm
+
+Tests:
+- write meaningful automated tests which are invoked by "make check" and
+  automatically respond with SUCCESS or FAILED
+- improve test coverage, ideally every function
