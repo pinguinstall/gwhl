@@ -32,8 +32,7 @@ double GWHL_Cholesky_decompLL(const double *A, long long int n, double *R){
   long long j = 0; // col
   long long i = 0; // row
   long long int k;
-  double lim = 0;
-  double eps = 1.0e-12;
+
   double s = 0;
   memcpy(R, A, n*n*sizeof(double));
   

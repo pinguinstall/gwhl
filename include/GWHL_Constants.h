@@ -28,4 +28,22 @@
 #define GWHLMATHCONSTANTS_C_KMS 299792.458
 #define GWHLMATHCONSTANTS_C_MS 299792458.0
 
+#define GWHL_VSH_10R 0
+#define GWHL_VSH_11R 1
+#define GWHL_VSH_11I 2
+
+#define GWHL_VSH_20R 3
+#define GWHL_VSH_21R 4
+#define GWHL_VSH_21I 5
+#define GWHL_VSH_22R 6
+#define GWHL_VSH_22I 7
+
+#define GWHL_VSH_30R 8
+#define GWHL_VSH_31R 9
+#define GWHL_VSH_31I 10
+#define GWHL_VSH_32R 11
+#define GWHL_VSH_32I 12
+#define GWHL_VSH_33R 13
+#define GWHL_VSH_33I 14
+
 #endif

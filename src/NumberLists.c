@@ -26,6 +26,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <inttypes.h>
+#include <omp.h>
 
 /**
  * @brief   generates list with exponetial growing spacing with double values
@@ -63,7 +64,6 @@ void GWHL_getLogscaleList(double start, double end, long long int numPoints, dou
 long long int GWHL_popcnt(int *vec, long long unsigned int n){
     long long int i;
     long long int cnt = 0;
-    
     for(i=0; i<n; i++){
         if(vec[i] != 0){
             cnt++;
@@ -167,8 +167,8 @@ void GWHL_getLinearList_int(long long int start, long long int end, long long in
  * result after call =
  *          (4, 3, 3, 5, 6)
  */
-void GWHL_addWithMask(double *vec, int vecl, double *result, int reslen, int *mask){
-    int i, m = 0;
+void GWHL_addWithMask(double *vec, long long int vecl, double *result, long long int reslen, int *mask){
+    long long int i, m = 0;
     for(i = 0; i < reslen; i++){
         if(mask[i] != 0){
             result[i] += vec[m];
@@ -184,8 +184,8 @@ void GWHL_addWithMask(double *vec, int vecl, double *result, int reslen, int *ma
 /**
  * set the entries of a compressed vector "result" using the "mask", from a uncompressed vector "vec"
  */
-void GWHL_setCompressedWithMask(double *vec, int vecl, double *result, int reslen, int *mask){
-    int i, m = 0;
+void GWHL_setCompressedWithMask(double *vec, long long int vecl, double *result, long long int reslen, int *mask){
+    long long int i, m = 0;
     for(i = 0; i < vecl; i++){
         if(mask[i] != 0){
             result[m] = vec[i];
@@ -200,9 +200,9 @@ void GWHL_setCompressedWithMask(double *vec, int vecl, double *result, int resle
 /**
  * set the entries of a uncompressed vector "result" using the "mask", from a compressed vector "vec"
  */
-void GWHL_setUncompressedWithMask(double *vec, int vecl, double *result, int reslen, int *mask){
+void GWHL_setUncompressedWithMask(double *vec, long long int vecl, double *result, long long int reslen, int *mask){
    
-    int i, m = 0;
+    long long int i, m = 0;
     for(i = 0; i<reslen; i++){
         if(mask[i] != 0){
             result[i] = vec[m];
@@ -219,6 +219,7 @@ void GWHL_setUncompressedWithMask(double *vec, int vecl, double *result, int res
  */
 void GWHL_setArrayToXd(double *array, double x, uint64_t arraylen){
     uint64_t i;
+    #pragma omp parallel for schedule(static) if(arraylen > 100000)
     for(i = 0; i < arraylen; i++){
         array[i] = x;        
     }
@@ -229,6 +230,23 @@ void GWHL_setArrayToXd(double *array, double x, uint64_t arraylen){
  */
 void GWHL_setArrayToXi(int *array, int x, uint64_t arraylen){
     uint64_t i;
+    #pragma omp parallel for schedule(static) if(arraylen > 100000)
+    for(i = 0; i < arraylen; i++){
+        array[i] = x;        
+    }
+}
+
+void GWHL_setArrayToXllu(long long unsigned int *array, long long unsigned int x, uint64_t arraylen){
+    uint64_t i;
+    #pragma omp parallel for schedule(static) if(arraylen > 100000)
+    for(i = 0; i < arraylen; i++){
+        array[i] = x;        
+    }
+}
+
+void GWHL_setArrayToXll(long long int *array, long long int x, uint64_t arraylen){
+    uint64_t i;
+    #pragma omp parallel for schedule(static) if(arraylen > 100000)
     for(i = 0; i < arraylen; i++){
         array[i] = x;        
     }
@@ -239,7 +257,39 @@ void GWHL_setArrayToXi(int *array, int x, uint64_t arraylen){
  */
 void GWHL_copyArray(double *src, double *dest, uint64_t len){
     uint64_t i;
+    
+    #pragma omp parallel for schedule(static) if(len > 100000)
     for(i=0; i<len; i++){
         dest[i] = src[i];
+    }
+}
+
+/**
+ * @brief set all entries to its absolute value (in-place replacement)
+ * 
+ * @param vec : input vector
+ * @param len : vector length
+ */
+void GWHL_Lists_setAbsoluteEntries(double *vec, long long unsigned int len){
+    long long unsigned int i = 0;
+    
+    #pragma omp parallel for schedule(static) if(len > 100000)
+    for(i = 0; i < len; i++){
+        vec[i] = fabs(vec[i]);
+    }
+}
+
+/**
+ * @brief set all entries to its squared value (in-place replacement)
+ * 
+ * @param vec : input vector
+ * @param len : vector length
+ */
+void GWHL_Lists_setSquaredEntries(double *vec, long long unsigned int len){
+    long long unsigned int i = 0;
+    
+    #pragma omp parallel for schedule(static) if(len > 100000)
+    for(i = 0; i < len; i++){
+        vec[i] = vec[i] * vec[i];
     }
 }

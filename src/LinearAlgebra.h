@@ -38,5 +38,7 @@ void GWHL_vecVecDivN(double *a, double *b, uint64_t len);
 void GWHL_vecDivN(double *a, double b, uint64_t len);
 void GWHL_crossProductVec3d(double *vecA, double *vecB, double *cross);
 void GWHL_vecVecTMulScaleUpdate(double *vecAIn, double *vecBIn, double weight, double *matInOut, long long unsigned int size);
+double GWHL_vecNormNd(double *vIn, long long int len);
+
 
 #endif

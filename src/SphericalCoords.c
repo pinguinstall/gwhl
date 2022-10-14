@@ -24,6 +24,9 @@
 
 /**
  * compute the local triad (p q r) in spherical coordinates
+ * p = EHV alpha
+ * q = EHV delta
+ * r = pointing vector to star
  */
 void GWHL_localTriad(double alpha, double delta, double *p, double *q, double *r) {
     double ca = cos(alpha);
@@ -218,5 +221,10 @@ double GWHL_SphCo_getAngularDistanceVec(const double *vec1, const double *vec2){
   GWHL_normalizeVectorN(v1n,3);
   GWHL_normalizeVectorN(v2n,3);
   
-  return acos(GWHL_vecVecDot3d(v1n, v2n));
+  
+  double cr[3] = {0.0, 0.0, 0.0};
+  GWHL_crossProductVec3d(v1n, v2n, cr);
+  
+  //return acos(GWHL_vecVecDot3d(v1n, v2n));
+  return atan2(GWHL_vecNormNd(cr, 3), GWHL_vecVecDot3d(v1n, v2n));
 }

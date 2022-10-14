@@ -25,9 +25,8 @@ void GWHL_GeneralRotationMatrix(double theta, double *u, double *R){
   double x = u[0];
   double y = u[1];
   double z = u[2];
-
-  double yxzpow = pow(x,2) + pow(y,2) + pow(z,2);
-  double normxyz = sqrt(yxzpow);
+ 
+  double normxyz = sqrt(x*x + y*y + z*z);
   x = x / normxyz;
   y = y / normxyz;
   z = z / normxyz;

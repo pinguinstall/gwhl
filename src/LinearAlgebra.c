@@ -29,6 +29,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <inttypes.h>
+#include "Helpers.h"
 
 /**
  * @brief  matR = matA * a
@@ -80,8 +81,7 @@ void GWHL_matVecMul3d(double *matA, double *vecB, double *vecR) {
 
 
 void GWHL_matVecMulNd(double *matA, double *vecB, long long int nColsNVec, long long int nRows, double *vecR){
-    long long int i,j;
-    double s;
+    long long int i, j;
     for(i = 0; i < nRows; i++){
 	vecR[i] = 0.0;
 	for(j = 0; j < nColsNVec; j++){
@@ -279,21 +279,53 @@ void GWHL_vecScaleNdUpdate(double *vecA, double a, unsigned long long int length
 
 
 /**
- * normalize a vector vec of length vl
- */
-void GWHL_normalizeVectorN(double *vec, int vl){
+* @brief normalize a vector of length "vl" in place
+* 
+* @param vec vector to normalize (in/out)
+* @param vl vector length
+*/
+void GWHL_normalizeVectorN(double *vec, unsigned long long int vl){
     double s = 0;
-    int i = 0;
+    unsigned long long int  i = 0;
     
     for(i = 0; i < vl; i++){
-        s += pow(vec[i], 2);
+        s += vec[i]*vec[i];
     }
     
-    s = sqrt(s);
+    s = 1 / sqrt(s);
     
     for(i = 0; i < vl; i++){
-        vec[i] = vec[i] / s;
+        vec[i] = vec[i] * s;
     }
+}
+
+/**
+* @brief normalize a vector of length "vl" in place using the max norm v / |max_i(v)|
+* 
+* @param vec vector to normalize (in/out)
+* @param vl vector length
+*/
+void GWHL_normalizeVectorNMaxNorm(double *vec, unsigned long long int vl){
+    double s = 0;
+    unsigned long long int  i = 0;
+    s = 1 / fabs(GWHL_Helpers_getMaxAbsFromData(vec, vl));
+    
+    for(i = 0; i < vl; i++){
+        vec[i] = vec[i] * s;
+    }
+}
+
+/**
+* @brief normalize a 3d vector in place
+* 
+* @param vec vector to normalize (in/out)
+*/
+void GWHL_normalizeVector3d(double *vec){
+    double s = 1 / sqrt(vec[0]*vec[0] + vec[1]*vec[1] +vec[2]*vec[2]);
+    
+    vec[0] = vec[0] * s;
+    vec[1] = vec[1] * s;
+    vec[2] = vec[2] * s;
 }
 
 /**
@@ -323,6 +355,16 @@ void GWHL_vecVecAddN(double *aIn, double *bInOut, uint64_t size){
     }
 }
 
+/**
+ * add two arbitrary arrays, results will be in c and overwritten
+ */
+void GWHL_vecVecAddNCopy(double *aIn, double *bIn, double *cOut, uint64_t size){
+    uint64_t i;
+    for(i = 0; i < size; i++){
+        cOut[i] = aIn[i] + bIn[i];
+    }
+}
+
 void GWHL_vecVecAddScaleN(double *aIn, double *bInOut, double s, uint64_t size){
     uint64_t i;
     for(i = 0; i < size; i++){
@@ -333,10 +375,20 @@ void GWHL_vecVecAddScaleN(double *aIn, double *bInOut, double s, uint64_t size){
 /**
  * a = a * b
  */
-void GWHL_vecVecMulN(double *a, double *b, uint64_t len){
+void GWHL_vecVecMulN(double *aInOut, double *bIn, uint64_t len){
     uint64_t i;
     for(i = 0; i < len; i++){
-        a[i] = a[i] * b[i];
+        aInOut[i] = aInOut[i] * bIn[i];
+    }
+}
+
+/**
+ * c = a * b
+ */
+void   GWHL_vecVecMulN_copy(double *a, double *b, double *cOut, uint64_t len){
+    uint64_t i;
+    for(i = 0; i < len; i++){
+        cOut[i] = a[i] * b[i];
     }
 }
 
@@ -360,12 +412,109 @@ void GWHL_vecDivN(double *a, double b, uint64_t len){
     }
 }
 
+
 /**
- * cross = vecA X vecB
- */
+* @brief standard right handed cross product for 3d vectors
+* 
+* @param vecA input vector a
+* @param vecB input vector b
+* @param cross output a x b
+*/
 void GWHL_crossProductVec3d(double *vecA, double *vecB, double *cross){
-  cross[0] = vecA[1] * vecB[2] - vecA[2] * vecB[1];
-  cross[1] = vecA[2] * vecB[0] - vecA[0] * vecB[2];
-  cross[2] = vecA[0] * vecB[1] - vecA[1] * vecB[0];
+    double out[3] = {0.0, 0.0, 0.0};
+    
+    out[0] = vecA[1] * vecB[2] - vecA[2] * vecB[1];
+    out[1] = vecA[2] * vecB[0] - vecA[0] * vecB[2];
+    out[2] = vecA[0] * vecB[1] - vecA[1] * vecB[0];
+    
+    cross[0] = out[0];
+    cross[1] = out[1];
+    cross[2] = out[2];
 }
 
+
+
+/**
+* @brief computes the euclidean norm (length) of the input vector
+* 
+* @param vIn p_vIn : input vector
+* @param len p_len : length of input vector
+* @return double - euclidean norm of vIn
+*/
+double GWHL_vecNormNd(double *vIn, long long int len){
+    double sqrtSum = GWHL_vecVecDotNd(vIn, vIn, len);
+    return sqrt(sqrtSum);
+}
+
+
+/**
+* @brief computes the sqrt of each element in vInOut
+* 
+* @param vInOut p_vInOut:input and output array, is overwritten
+* @param len p_len:length of array
+*/
+void GWHL_vecSqrtElemWise(double *vInOut, long long unsigned int len){
+    long long unsigned int i;
+    for(i=0; i<len; i++){
+        vInOut[i] = sqrt(vInOut[i]);
+    }
+}
+
+
+/**
+* @brief returns the row sum norm of a MxN matrix
+* 
+* @param A p_A:matrix
+* @param M p_M:dimension M
+* @param N p_N:dimension N
+* @return double - row sum norm
+*/
+double GWHL_LinAlg_getRowSumNorm(double *A, long long unsigned int M, long long unsigned int N){
+    long long unsigned int i, j;
+    double sums[M];
+    
+    GWHL_zeroArray(sums, M);
+    
+    for(i = 0; i < M; i++){
+        for(j = 0; j < N; j++){
+            sums[i] += fabs(A[N*i + j]);
+        }
+    }
+    
+    return GWHL_Helpers_getMaxFromData(sums, M);
+}
+
+/**
+* @brief returns the coloumn sum norm of a MxN matrix
+* 
+* @param A p_A:matrix
+* @param M p_M:dimension M
+* @param N p_N:dimension N
+* @return double - coloumn sum norm
+*/
+double GWHL_LinAlg_getColSumNorm(double *A, long long unsigned int M, long long unsigned int N){
+    long long unsigned int i, j;
+    double sums[N];
+    
+    GWHL_zeroArray(sums, N);
+    
+    for(i = 0; i < M; i++){
+        for(j = 0; j < N; j++){
+            sums[j] += fabs(A[N*i + j]);
+        }
+    }
+    
+    return GWHL_Helpers_getMaxFromData(sums, N);
+}
+
+
+
+void GWHL_LinAlg_mirrorMatrixUpperToLower(double *A, long long unsigned int M, long long unsigned int N){
+    long long unsigned int i,j;
+    
+    for(i = 0; i < M; i++){
+        for(j = i; j < N; j++){
+            A[N*j + i] = A[N*i + j];
+        }
+    }
+}

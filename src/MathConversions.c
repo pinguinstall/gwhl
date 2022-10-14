@@ -34,13 +34,42 @@ double GWHL_degToRad(double deg) {
     return (GWHLMATHCONSTANTS_PI * deg) / 180.0;
 }
 
+/**
+* @brief inplace converts all values in vec from deg to rad
+* 
+* @param vec - input and output vector
+* @param len - vector length
+*/
+void GWHL_degToRadVec(double *vec, unsigned long long int len){
+    unsigned long long int i;
+    for(i = 0; i < len; i++){
+        vec[i] = GWHL_degToRad(vec[i]);
+    }
+}
 
 /**
  * @brief   micro arc seconds to radian conversion
  * @return  radian
  */
-double GWHL_microasToRad(double mas) {
-    return (GWHLMATHCONSTANTS_PI * mas) / 648000000000.0;
+double GWHL_microasToRad(double uas) {
+    return (GWHLMATHCONSTANTS_PI * uas) / 648000000000.0;
+}
+
+double GWHL_uasToRad(double uas) {
+    return (GWHLMATHCONSTANTS_PI * uas) / 648000000000.0;
+}
+
+/**
+* @brief inplace converts all values in vec from uas to rad
+* 
+* @param vec - input and output vector
+* @param len - vector length
+*/
+void GWHL_microasToRadVec(double *vec, unsigned long long int len){
+    unsigned long long int i;
+    for(i = 0; i < len; i++){
+        vec[i] = GWHL_microasToRad(vec[i]);
+    }
 }
 
 
@@ -54,9 +83,36 @@ double GWHL_radToMicroas(double rad) {
 
 
 /**
+* @brief inplace converts all values in vec from rad to uas
+* 
+* @param vec - input and output vector
+* @param len - vector length
+*/
+void GWHL_radToMicroasVec(double *vec, unsigned long long int len){
+    unsigned long long int i;
+    for(i = 0; i < len; i++){
+        vec[i] = GWHL_radToMicroas(vec[i]);
+    }
+}
+
+
+/**
  * @brief   radian to degree conversion
  * @return  degree
  */
 double GWHL_radToDeg(double rad) {
     return (rad * 180.0) / GWHLMATHCONSTANTS_PI;
+}
+
+/**
+* @brief inplace converts all values in vec from rad to deg
+* 
+* @param vec - input and output vector
+* @param len - vector length
+*/
+void GWHL_radToDegVec(double *vec, unsigned long long int len){
+    unsigned long long int i;
+    for(i = 0; i < len; i++){
+        vec[i] = GWHL_radToDeg(vec[i]);
+    }
 }
