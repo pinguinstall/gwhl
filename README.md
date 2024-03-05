@@ -1,7 +1,7 @@
-# gwhl
+# GWHL
 repository for the GWHL
 
-The "Gravitational Wave Helper Lib" is a very basic math library with flat data types.
+The "Gravitational Wave Helper Lib" is a very basic math library with flat data types and code as simple as possible.
 
 Some basic numeric routines are present:
 - basic 3d vector BLAS 1,2,3, with non-standard interfaces
@@ -23,3 +23,10 @@ Acknowledgements / Contributors:
   
   This library has been partly developed during projects financially supported by
 ESA under grant 4000115263/15/NL/IB and the BMWi grant 50QG1402 awarded by the DLR.
+
+## installation
+* Get a copy of GNU GSL ([https://www.gnu.org/software/gsl/]), either by manual installation or via your distribution.
+* Set the GSLDIR variable in the GWHL Makefile to this installation of GSL
+* Adapt the rest of the Makefile to your needs
+* make
+* the resulting libGWHelper.so can be used as needed

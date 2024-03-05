@@ -65,11 +65,11 @@ int GWHL_BitMasks_checkAllOne(uint64_t *bitmask){
 
 
 /**
- * @brief kind of silly compare function (checks if both numbers are equal)
+ * @brief compare function (checks if both numbers are equal)
  * 
- * @param bm1 p_bm1:...
- * @param bm2 p_bm2:...
- * @return int
+ * @param bm1 bitmask 1
+ * @param bm2 bitmask 2
+ * @return 1 if equal, 0 if not equal
  */
 int GWHL_BitMasks_compare(uint64_t *bm1, uint64_t *bm2){
     if(bm1 == bm2) return 1;

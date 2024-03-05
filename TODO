@@ -3,9 +3,9 @@ Documentation:
 - Handbook
 
 Functionality:
-- crazy indexing schemes to linear arrays
+- all kinds of indexing schemes (triangular, sliced, ...) to linear arrays
 - sparse matrix functionality
-- MPI based distributed sorting on too-large-for-one datasets
+- MPI based distributed sorting on too-large-for-one-node datasets
 
 Code:
 - separate code more clearly by function, most source files are rather big atm

@@ -4,8 +4,10 @@ A very simple and fast, math library (not only) for gravitational wave (GW)
 science using raw C data types.
 GWHL is developed alongside GaiaGW, the VSH-based GW detection pipeline for
 the ESA Gaia mission.
+The goal of GWHL is to keep the routines as simple as possible, not to provide
+the best API, error handling or elegance of code.
 
-Author:
+Authors:
   Robin Geyer (Lohrmann-Observatory, TU Dresden, Germany, robin.geyer@tu-dresden.de)
 
 Acknowledgements / Contributors:
@@ -16,7 +18,7 @@ Acknowledgements / Contributors:
   ESA under grant 4000115263/15/NL/IB and the BMWi grant 50QG1402 awarded by the DLR.
   
 Installation:
-  - Make sure you have an installation of GNU GSL >= 2.3
+  - Make sure you have an installation of GNU GSL >= 2.7
   - Make sure you have an MPI-2 compatible Version of OpenMPI.
     (other MPI Implementations might work as well, not tested)
   - Modifiy "Makefile" according to your need, important is the GSL-path

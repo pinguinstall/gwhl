@@ -1,5 +1,5 @@
-GSLDIR=../gsl-2.6/LIBRARY
-CFLAGS=-g -O0 -march=native -fgnu89-inline -pedantic -I $(GSLDIR)/include/ -Warray-bounds -Wall -fopenmp
+GSLDIR=../gsl-2.7.1/LIBRARY
+CFLAGS=-g -O3 -march=native -fgnu89-inline -pedantic -I $(GSLDIR)/include/ -Warray-bounds -Wall -fopenmp
 LDFLAGS= -L $(GSLDIR)/lib/ -lm -lgsl -lgslcblas
 FPIC=-fpic
 SHARED=-shared
@@ -21,6 +21,7 @@ all:
 	$(CC) $(CFLAGS) $(FPIC) -c src/io.c -I include/
 	$(CC) $(CFLAGS) $(FPIC) -c src/bitmasks.c -I include/
 	$(CC) $(CFLAGS) $(FPIC) -c src/sorting.c -I include/
+	$(CC) $(CFLAGS) $(FPIC) -c src/Statistics.c -I include/
 	$(CC) $(CFLAGS) $(FPIC) -c src/SparseLinearAlgebra.c -I include/
 	$(CC) $(CFLAGS) $(FPIC) $(SHARED) -o libGWHelper.so *.o $(LDFLAGS)
 

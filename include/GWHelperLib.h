@@ -361,13 +361,70 @@ double GWHL_getTime();
 int GWHL_fprintf2(FILE* stream1, FILE* stream2, const char *format, ...);
 
 
+/**
+ * @brief Set all bits to zero
+ * 
+ * @param bitmask bitmask to manipulate
+ */
 void GWHL_BitMasks_setAllZero(uint64_t *bitmask);
-void GWHL_BitMasks_setAllOne(uint64_t *bitmask);
+
+
+/**
+ * @brief Set all bits to one
+ * 
+ * @param bitmask bitmask to manipulate
+ */
+void WHL_BitMasks_setAllOne(uint64_t *bitmask);
+
+
+/**
+ * @brief Set n'th bit to zero (counting starts at 0)
+ * 
+ * @param bitmask bitmask to manipulate
+ * @param nth position of bit
+ */
 void GWHL_BitMasks_setNthToZero(uint64_t *bitmask, int nth);
+
+/**
+ * @brief Set n'th bit to one (counting starts at 0)
+ * 
+ * @param bitmask bitmask to manipulate
+ * @param nth position of bit
+ */
 void GWHL_BitMasks_setNthToOne(uint64_t *bitmask, int nth);
+
+/**
+ * @brief Flipp n'th bit (counting starts at 0)
+ * 
+ * @param bitmask bitmask to manipulate
+ * @param nth position of bit
+ */
 void GWHL_BitMasks_flipNth(uint64_t *bitmask, int nth);
+
+/**
+ * @brief get value of n'th bit (counting starts at 0)
+ * 
+ * @param bitmask bitmask to query
+ * @param nth position of bit
+ * @return bit value as integer
+ */
 int GWHL_BitMasks_getNth(uint64_t *bitmask, int nth);
+
+
+/**
+ * @brief check if all bits are zero
+ * 
+ * @param bitmask input bitmask
+ * @return 1 if all are zero, 0 if not
+ */
 int GWHL_BitMasks_checkAllZero(uint64_t *bitmask);
+
+/**
+ * @brief check if all bits are one
+ * 
+ * @param bitmask input bitmask
+ * @return 1 if all are ones, 0 if not
+ */
 int GWHL_BitMasks_checkAllOne(uint64_t *bitmask);
 
 /**
@@ -452,7 +509,6 @@ int GWHL_BitMasks_large_map_getNth(gwhl_bitmask_long *bm, unsigned long long int
  */
 int GWHL_BitMasks_large_map_compare(gwhl_bitmask_long *bm1, gwhl_bitmask_long *bm2);
 
-
 /**
  * @brief hamming weight or popcount of arbitrary length bitmask
  * 
@@ -495,4 +551,57 @@ void GWHL_Lists_setAbsoluteEntries(double *vec, long long unsigned int len);
  */
 void GWHL_Lists_setSquaredEntries(double *vec, long long unsigned int len);
 
+/**
+ * @brief computes the quantile of the given data in the vector
+ * 
+ * @param vec array of doubles
+ * @param len length of array
+ * @param quantile quantile
+ * @param inPlace proces in-place (will sort data in the array), meaningless if isSortedData = 1 
+ * @param isSortedData indicated whether data is already sorted (will not be checked internaly)
+ * @return the quantile asked for
+ */
+double GWHL_Stat_quantile(double *vec, long long unsigned int len, double quantile, int inPlace, int isSortedData);
+
+/**
+ * @brief returns the RSE (robust scatter estimate) of the data in te array
+ * 
+ * @param vec array with the data
+ * @param len length of data
+ * @param inPlace proces in-place (will sort data in the array)
+ * @return RSE
+ */
+double GWHL_Stat_RSE(double *vec, long long unsigned int len, int inPlace, int isSortedData);
+
+/**
+ * @brief returns the RMS of data, weighted if necessary
+ * 
+ * @param vec data input
+ * @param weights equally long array of weights (must be set to NULL if unweighted)
+ * @param len length of arrays
+ * @return RMS or weighted RMS value
+ */
+double GWHL_Stat_RMS(double *vec, double *weights, long long unsigned int len);
+
+/**
+ * @brief computes the weighted or un-weighted R2 value (Coefficient of determination)
+ * 
+ * @param dat data (observed)
+ * @param mod prediction (values for data-points given by model)
+ * @param weights weights (un-weighted if this is NULL)
+ * @param len length of arrays
+ * @return R2
+ */
+double GWHL_Stat_R2(double *dat, double *mod, double *weights, long long unsigned int len);
+
+/**
+ * @brief computes the weighted or un-weighted R2 value (Coefficient of determination) from residuals
+ * 
+ * @param dat data (observed)
+ * @param residuals residuals from the fit
+ * @param weights weights of observations
+ * @param len length of arrays
+ * @return double
+ */
+double GWHL_Stat_R2_Residuals(double *dat, double *residuals, double *weights, long long unsigned int len);
 #endif

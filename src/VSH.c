@@ -50,11 +50,11 @@ void GWHL_VSH_getGlmFlm(const int maxl, const double a, const double d, double *
     GWHL_LegendreP_getCosSinMap(a, maxl, cosmap, sinmap);
     
     for(l = 1; l <= maxl; l++){
-        flmRI[i] = betas[GWHL_LegendreP_lm2idx(l, 0, maxl)] * A[GWHL_LegendreP_lm2idx(l, 0, maxl)] * cosmap[0];
+        flmRI[i] =  betas[GWHL_LegendreP_lm2idx(l, 0, maxl)] * A[GWHL_LegendreP_lm2idx(l, 0, maxl)] * cosmap[0];
         glmRI[i] = -betas[GWHL_LegendreP_lm2idx(l, 0, maxl)] * B[GWHL_LegendreP_lm2idx(l, 0, maxl)] * sinmap[0];
         i++;
         for(m = 1; m <= l; m++){
-                flmRI[i] = 2 * betas[GWHL_LegendreP_lm2idx(l, m, maxl)] * A[GWHL_LegendreP_lm2idx(l, m, maxl)] * cosmap[m];
+                flmRI[i] =  2 * betas[GWHL_LegendreP_lm2idx(l, m, maxl)] * A[GWHL_LegendreP_lm2idx(l, m, maxl)] * cosmap[m];
                 glmRI[i] = -2 * betas[GWHL_LegendreP_lm2idx(l, m, maxl)] * B[GWHL_LegendreP_lm2idx(l, m, maxl)] * sinmap[m];
                 i++;
 
